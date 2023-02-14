@@ -1,0 +1,45 @@
+version: "3"
+services:
+  mr-sql-container:
+    image: mysql:8
+    container_name: mr-sql-container
+    networks:
+      - md-network
+    environment:
+      #      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=medical_record
+    ports:
+      - "3306:3306"
+#    network_mode: host
+
+  mr-spring-container:
+    image: spring-md-st
+    container_name: mr-spring-container
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mr-sql-container:3306/medical_record?autoReconnect=true&useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL-AUTO: create
+#      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
+    networks:
+      - md-network
+    depends_on:
+      - mr-sql-container
+    restart: always
+    ports:
+      - "8080:8080"
+#    network_mode: host
+
+  mr-react-container:
+    container_name: mr-react-container
+    image: react-md-st
+    networks:
+      - md-network
+    ports:
+      - "3000:3000"
+#    network_mode: host
+
+networks:
+  md-network:
+    external: true

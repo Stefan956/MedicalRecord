@@ -1,0 +1,166 @@
+body{
+    overflow-x: hidden;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    overflow: hidden;
+}
+
+td, th {
+    text-align: center;
+    border: 1px solid #dddddd;
+    padding: 8px;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+}
+
+.grid {
+    position: relative;
+    margin-top: 2%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid gray;
+    width: 90vmin;
+    height: auto;
+}
+.textarea{
+    min-width: 70vmin;
+    max-width: 90vmin;
+    min-height: 30vmin;
+    max-height: 50vmin;
+}
+.submitButton {
+    margin-top: 2%;
+
+}
+
+.paper {
+    position: relative;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 2%;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+    border: 1px solid black;
+    border-radius: 6px;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.avatarDiv {
+    text-align: center;
+}
+
+.avatar {
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 3%;
+    border-radius: 50%;
+    width:10%;
+    background-color: #95baf5;
+}
+
+.avatarText {
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 3%;
+}
+
+.divider{
+    width: 70%;
+}
+
+.footer{
+    margin-top:calc(15% + 20px);
+    bottom: 0;
+    width: 110%;
+    height: 10vmin;
+    transform: translate(-4.8%,5%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid black;
+    font-size: 5vmin;
+    text-align: center;
+}
+@media (max-width: 468px){
+    .footer{
+        height: 20vmin;
+    }
+    .pillButton{
+        width: 23vmin;
+        height: 8vmin;
+    }
+}
+.box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 46vmin;
+    height: 40vmin;
+    font-size: 3vmin;
+    margin-top: 2vmin;
+}
+.pillButton {
+    background-color: #367ac2;
+    width: 20vmin;
+    height: 6vmin;
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 16px;
+}
+.pillChange{
+    width: 50vmin;
+    height: 2vmin;
+    border: 1px solid black;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+}
+.pillInput{
+    background-color: #ddd;
+    min-width: 30vmin;
+    max-width: 35vmin;
+    min-height: 14vmin;
+    max-height: 18vmin;
+    border: none;
+    color: black;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+}
+.topText{
+    font-size: 5vmin;
+    font-weight: bold;
+}
