@@ -1,6 +1,6 @@
 # Medical Record
 
-`Java 11` · `Spring Boot 2.3.4` · `React 17` · `MySQL 8` · `Docker` · `Material-UI` · `REST API`
+`Java 17` · `Spring Boot 2.3.4` · `React 17` · `MySQL 8` · `Docker` · `Material-UI` · `REST API`
 
 Full-stack digital health records management system for patients and doctors. Enables GP registration, appointment tracking, diagnosis recording, prescription management, and sick leave documentation.
 
@@ -61,7 +61,7 @@ Controller  →  Service (interface + impl)  →  DAO (JpaRepository)  →  MySQ
 ### Backend
 | Technology | Version | Purpose |
 |---|---|---|
-| Java | 11 | Language |
+| Java | 17 | Language |
 | Spring Boot | 2.3.4.RELEASE | Application framework |
 | Spring Data JPA | managed | ORM and data access |
 | Hibernate | managed | JPA implementation |
@@ -546,7 +546,7 @@ SPRING_JPA_HIBERNATE_DDL-AUTO: create
 
 ### Java Version
 
-The project targets Java 11. If running locally with a newer JDK, point `JAVA_HOME` to a JDK 11 installation:
+The project targets Java 17. If running locally with a newer JDK, point `JAVA_HOME` to a JDK 11 installation:
 
 ```bash
 export JAVA_HOME=/path/to/jdk-11
