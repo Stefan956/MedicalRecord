@@ -12,7 +12,8 @@ class Create extends React.Component {
         this.state = {
             first_name: '',
             last_name: '',
-            egn: ''
+            egn: '',
+            message: ''
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -24,10 +25,10 @@ class Create extends React.Component {
         const url = "http://localhost:8080/api/patient/create";
         axios.post(url,{id:0, first_name: this.state.first_name, last_name: this.state.last_name, egn: this.state.egn})
             .then(response=>{
-                console.log("Item added");
+                this.setState({ first_name: '', last_name: '', egn: '', message: 'Created Successfully' });
+                setTimeout(() => this.setState({ message: '' }), 3000);
             })
             .catch(error=>{console.log(error)})
-
     }
     render(){
         return (
@@ -35,7 +36,7 @@ class Create extends React.Component {
                 <div alt="menu">
                     <Menu />
                 </div>
-                <Grid item xs={6} class="grid">
+                <Grid item xs={6} className="grid">
                     <h2>Create a patient</h2>
                     <p><input className="pillChange" value={this.state.first_name} placeholder="Enter first name"
                               onChange={(event) => this.handleChange(event, "first_name")}></input></p>
@@ -43,7 +44,8 @@ class Create extends React.Component {
                               onChange={(event) => this.handleChange(event, "last_name")}></input></p>
                     <p><input className="pillChange" value={this.state.egn} placeholder="Enter egn"
                               onChange={(event) => this.handleChange(event, "egn")}></input></p>
-                    <div class="submitButton">
+                    {this.state.message && <p style={{color: 'green', fontWeight: 'bold'}}>{this.state.message}</p>}
+                    <div className="submitButton">
                         <Button variant="contained" color="primary" onClick={this.handleSubmit}>
                             Submit
                         </Button></div>

@@ -1,21 +1,15 @@
-package com.cscb869.MedicalRecord.model;
+package com.cscb869.MedicalRecord.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@Entity
-public class Appointment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+public class AppointmentRequest {
     @JsonProperty("appointment_date")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;
@@ -34,11 +28,9 @@ public class Appointment {
     @JsonProperty("medicine")
     private String medicine;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+    @JsonProperty("patient_id")
+    private long patientId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    @JsonProperty("doctor_id")
+    private long doctorId;
 }

@@ -1,5 +1,6 @@
 package com.cscb869.MedicalRecord.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.cscb869.MedicalRecord.model.Patient;
 import com.sun.istack.NotNull;
@@ -16,18 +17,14 @@ public class DoctorDTO {
     @NotNull
     @JsonProperty("first_name")
     private String firstName;
-
     @NotNull
     @JsonProperty("last_name")
     private String lastName;
-    @NotNull
-    private String specialization;
 
-    @NotNull
+    @JsonProperty("doctor_is_gp")
     private boolean isGp;
 
-//    @NotNull
-//    private List<Specialization> specializations;
-
+    @JsonProperty("registered_patients")
+    @JsonIgnore
     private List<Patient> patients;
 }

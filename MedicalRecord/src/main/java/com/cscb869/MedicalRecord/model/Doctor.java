@@ -42,4 +42,8 @@ public class Doctor {
             fetch = FetchType.EAGER)
     @JsonProperty("registered_patients")
     private List<Patient> patients;
+
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Appointment> appointments;
 }

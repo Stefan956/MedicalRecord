@@ -11,6 +11,7 @@ class Create extends React.Component {
         super(props);
         this.state = {
             name: '',
+            message: ''
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -22,10 +23,10 @@ class Create extends React.Component {
         const url = "http://localhost:8080/api/specialization/create";
         axios.post(url,{id:0, name: this.state.name})
             .then(response=>{
-                console.log("Item added");
+                this.setState({ name: '', message: 'Created Successfully' });
+                setTimeout(() => this.setState({ message: '' }), 3000);
             })
             .catch(error=>{console.log(error)})
-
     }
     render(){
         return (
@@ -33,11 +34,12 @@ class Create extends React.Component {
                 <div alt="menu">
                     <Menu />
                 </div>
-                <Grid item xs={6} class="grid">
+                <Grid item xs={6} className="grid">
                     <h2>Create a specialization</h2>
                     <p><input className="pillChange" value={this.state.name} placeholder="Enter name of specialization"
                               onChange={(event) => this.handleChange(event, "name")}></input></p>
-                    <div class="submitButton">
+                    {this.state.message && <p style={{color: 'green', fontWeight: 'bold'}}>{this.state.message}</p>}
+                    <div className="submitButton">
                         <Button variant="contained" color="primary" onClick={this.handleSubmit}>
                             Submit
                         </Button></div>

@@ -46,31 +46,39 @@ export default function TemporaryDrawer() {
         >
             <List>
                 <ListItem>
-                   <a href="/" class="link"><ListItemText primary="Home" /></a>
+                   <a href="/" className="link"><ListItemText primary="Home" /></a>
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <a href="/create-patient" class="link"><ListItemText primary="Create a patient" /></a>
+                    <a href="/create-patient" className="link"><ListItemText primary="Create a patient" /></a>
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <a href="/patients" class="link"><ListItemText primary="View patients" /></a>
+                    <a href="/patients" className="link"><ListItemText primary="View patients" /></a>
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <a href="/create-specialization" class="link"><ListItemText primary="Create a specialization" /></a>
+                    <a href="/create-specialization" className="link"><ListItemText primary="Create a specialization" /></a>
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <a href="/specializations" class="link"><ListItemText primary="View specializations" /></a>
+                    <a href="/specializations" className="link"><ListItemText primary="View specializations" /></a>
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <a href="/create-doctor" class="link"><ListItemText primary="Create a doctor" /></a>
+                    <a href="/create-doctor" className="link"><ListItemText primary="Create a doctor" /></a>
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <a href="/doctors" class="link"><ListItemText primary="View doctors" /></a>
+                    <a href="/doctors" className="link"><ListItemText primary="View doctors" /></a>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <a href="/create-appointment" className="link"><ListItemText primary="Create an appointment" /></a>
+                </ListItem>
+                <Divider />
+                <ListItem>
+                    <a href="/appointments" className="link"><ListItemText primary="View appointments" /></a>
                 </ListItem>
                 <Divider />
             </List>

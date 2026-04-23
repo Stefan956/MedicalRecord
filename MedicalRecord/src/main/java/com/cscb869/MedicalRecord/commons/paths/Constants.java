@@ -6,6 +6,7 @@ public class Constants {
     public static final String DOCTOR_PATH = "/doctor";
     public static final String APPOINTMENT_PATH = "/appointment";
     public static final String SPECIALIZATION_PATH = "/specialization";
+    public static final String RECORD_PATH = "/record";
 
     public static final String INTERNAL_SERVER_ERROR = "INTERNAL SERVER ERROR";
 

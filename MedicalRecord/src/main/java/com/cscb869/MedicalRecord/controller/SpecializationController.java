@@ -71,7 +71,7 @@ public class SpecializationController {
     public ResponseEntity<?> updateSpecialization(@Valid @RequestBody Specialization specialization, @PathVariable long id) {
         try {
             specialization.setId(id);
-            SpecializationDTO specializationResponse = specializationService.createSpecialization(specialization);
+            SpecializationDTO specializationResponse = specializationService.updateSpecialization(specialization);
 
             return new ResponseEntity<>(specializationResponse, HttpStatus.OK);
         } catch (NotFoundException e) {

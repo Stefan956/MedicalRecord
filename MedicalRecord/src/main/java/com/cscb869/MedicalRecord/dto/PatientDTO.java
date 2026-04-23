@@ -17,6 +17,8 @@ public class PatientDTO {
     @NotNull
     @JsonProperty("last_name")
     private String lastName;
+    @JsonProperty("egn")
+    private long EGN;
     private Doctor doctor;
     @JsonProperty("has_paid_insurance")
     private boolean hasPaidInsurance;

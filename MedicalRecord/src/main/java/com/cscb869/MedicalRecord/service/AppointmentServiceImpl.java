@@ -1,19 +1,19 @@
 package com.cscb869.MedicalRecord.service;
 
+import com.cscb869.MedicalRecord.dto.AppointmentDTO;
+import com.cscb869.MedicalRecord.dto.AppointmentRequest;
 import com.cscb869.MedicalRecord.dto.DoctorDTO;
 import com.cscb869.MedicalRecord.dto.PatientDTO;
-import com.cscb869.MedicalRecord.dto.AppointmentDTO;
 import com.cscb869.MedicalRecord.exception.NotFoundException;
+import com.cscb869.MedicalRecord.model.Appointment;
 import com.cscb869.MedicalRecord.model.Doctor;
 import com.cscb869.MedicalRecord.model.Patient;
-import com.cscb869.MedicalRecord.model.Appointment;
 import com.cscb869.MedicalRecord.dao.AppointmentDAO;
 import com.cscb869.MedicalRecord.commons.utilities.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.toUnmodifiableList;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
-    private AppointmentDAO appointmentDAO;
+    private final AppointmentDAO appointmentDAO;
     @Autowired
     private PatientService patientService;
     @Autowired
@@ -42,142 +42,99 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (appointments == null) {
             return Collections.emptyList();
         }
-
-        List<AppointmentDTO> appointmentDtos = mapAppointmentsList(appointments);
-
-        return appointmentDtos;
+        return appointments.stream().map(this::mapAppointment).collect(toUnmodifiableList());
     }
 
     @Override
-    public List<AppointmentDTO> getAllAppointments(long id) {
-        patientService.findById(id);
-        List<Appointment> appointments = new ArrayList<>();
-//        appointmentDAO.findAll()
-//                .stream()
-//                .filter(item -> item.getPatientId() == id)
-//                .map(item -> appointments.add(item));
-
-        for (Appointment item : appointmentDAO.findAll()) {
-            if (item.getPatientId() == id) {
-                appointments.add(item);
-            }
-        }
-
-        List<AppointmentDTO> appointmentDto = mapAppointmentsList(appointments);
-
-        return appointmentDto;
+    public List<AppointmentDTO> getAllAppointments(long patientId) {
+        patientService.findById(patientId);
+        return appointmentDAO.findAll().stream()
+                .filter(a -> a.getPatient() != null && a.getPatient().getId() == patientId)
+                .map(this::mapAppointment)
+                .collect(toUnmodifiableList());
     }
+
     @Override
     public List<AppointmentDTO> getAllAppointments(long doctorId, long patientId) {
-        //if the following check is not true - NotFoundException will be thrown
-        //check for existing patient with this id
         patientService.findById(patientId);
-        List<AppointmentDTO> appointments = new LinkedList<>();
-        getAllAppointments(patientId)
-                .stream()
-                .filter(item -> item.getDoctor().getId() == doctorId)
-                .map(item -> appointments.add(item));
-
-        return appointments;
+        return getAllAppointments(patientId).stream()
+                .filter(a -> a.getDoctor() != null && a.getDoctor().getId() == doctorId)
+                .collect(toUnmodifiableList());
     }
 
     @Override
     public AppointmentDTO getAppointmentDtoById(long id) {
+        return mapAppointment(findById(id));
+    }
+
+    @Override
+    public AppointmentDTO createAppointment(AppointmentRequest request) {
+        Patient patient = patientService.findById(request.getPatientId());
+        Doctor doctor = doctorService.findById(request.getDoctorId());
+
+        Appointment appointment = new Appointment();
+        appointment.setAppointmentDate(request.getAppointmentDate());
+        appointment.setSickLeaveStartDate(request.getSickLeaveStartDate());
+        appointment.setSickLeaveEndDate(request.getSickLeaveEndDate());
+        appointment.setIllness(request.getIllness());
+        appointment.setMedicine(request.getMedicine());
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+
+        return mapAppointment(appointmentDAO.save(appointment));
+    }
+
+    @Override
+    public AppointmentDTO updateAppointment(long id, AppointmentRequest request) {
         Appointment appointment = findById(id);
-        AppointmentDTO appointmentDto = mapAppointments(appointment);
-
-        return appointmentDto;
-    }
-
-    @Override
-    public AppointmentDTO createAppointment(Appointment appointment) {
-        Appointment appointmentResponse = appointmentDAO.save(appointment);
-        AppointmentDTO appointmentResponseDto = mapAppointments(appointmentResponse);
-
-        return appointmentResponseDto;
-    }
-
-    @Override
-    public AppointmentDTO updateAppointment(Appointment updatedAppointment) {
-        Appointment appointmentResponse = appointmentDAO.findById(updatedAppointment.getId())
-                .map(appointment -> {
-                    appointment.setAppointmentDate(updatedAppointment.getAppointmentDate());
-                    appointment.setSickLeaveStartDate(updatedAppointment.getSickLeaveStartDate());
-                    appointment.setSickLeaveEndDate(updatedAppointment.getSickLeaveEndDate());
-                    appointment.setIllness(updatedAppointment.getIllness());
-                    appointment.setMedicine(updatedAppointment.getMedicine());
-                    return appointmentDAO.saveAndFlush(appointment);
-                })
-                .orElseThrow(() -> new NotFoundException("Appointment with id " + updatedAppointment.getId() + " is not found."));
-        AppointmentDTO appointmentResponseDto = mapAppointments(appointmentResponse);
-
-
-        return appointmentResponseDto;
+        appointment.setAppointmentDate(request.getAppointmentDate());
+        appointment.setSickLeaveStartDate(request.getSickLeaveStartDate());
+        appointment.setSickLeaveEndDate(request.getSickLeaveEndDate());
+        appointment.setIllness(request.getIllness());
+        appointment.setMedicine(request.getMedicine());
+        appointment.setPatient(patientService.findById(request.getPatientId()));
+        appointment.setDoctor(doctorService.findById(request.getDoctorId()));
+        return mapAppointment(appointmentDAO.saveAndFlush(appointment));
     }
 
     @Override
     public void deleteAppointment(long id) {
         findById(id);
-
         appointmentDAO.deleteById(id);
     }
 
     @Override
     public Appointment findById(long id) {
-        Appointment appointment = appointmentDAO.findById(id)
+        return appointmentDAO.findById(id)
                 .orElseThrow(() -> new NotFoundException("Appointment with id " + id + " is not found."));
-
-        return appointment;
     }
 
     @Override
     public List<AppointmentDTO> patientsWithGivenIllness(String illness) {
         List<AppointmentDTO> result = new LinkedList<>();
-        List<AppointmentDTO> appointments = getAllAppointments();
-        for (AppointmentDTO appointment : appointments) {
-            if (appointment.getIllness().equals(illness)) result.add(appointment);
+        for (AppointmentDTO a : getAllAppointments()) {
+            if (a.getIllness().equals(illness)) result.add(a);
         }
-
         return result;
     }
 
     @Override
     public List<AppointmentDTO> getAppointmentsToDoctor(long doctorId) {
         List<AppointmentDTO> result = new LinkedList<>();
-        List<AppointmentDTO> appointments = getAllAppointments();
-        for (AppointmentDTO appointment : appointments) {
-            if (appointment.getDoctor().getId() == doctorId) result.add(appointment);
+        for (AppointmentDTO a : getAllAppointments()) {
+            if (a.getDoctor() != null && a.getDoctor().getId() == doctorId) result.add(a);
         }
-
         return result;
     }
 
-    private List<AppointmentDTO> mapAppointmentsList(List<Appointment> appointments) {
-        List<AppointmentDTO> result = appointments.stream()
-                .map(item -> {
-                    Patient patient = patientService.findById(item.getPatientId());
-                    PatientDTO patientDto = modelMapper.map(patient, PatientDTO.class);
-                    Doctor doctor = doctorService.findById(item.getDoctorId());
-                    DoctorDTO doctorDto = modelMapper.map(doctor, DoctorDTO.class);
-                    AppointmentDTO appointmentDto = modelMapper.map(item, AppointmentDTO.class);
-                    appointmentDto.setPatient(patientDto);
-                    appointmentDto.setDoctor(doctorDto);
-                    return appointmentDto;
-                })
-                .collect(toUnmodifiableList());
-
-        return result;
-    }
-
-    private AppointmentDTO mapAppointments(Appointment appointment) {
-        AppointmentDTO appointmentDto = modelMapper.map(appointment, AppointmentDTO.class);
-        Patient patient = patientService.findById(appointment.getPatientId());
-        PatientDTO patientDto = modelMapper.map(patient, PatientDTO.class);
-        Doctor doctor = doctorService.findById(appointment.getDoctorId());
-        DoctorDTO doctorDto = modelMapper.map(doctor, DoctorDTO.class);
-        appointmentDto.setPatient(patientDto);
-        appointmentDto.setDoctor(doctorDto);
-
-        return appointmentDto;
+    private AppointmentDTO mapAppointment(Appointment appointment) {
+        AppointmentDTO dto = modelMapper.map(appointment, AppointmentDTO.class);
+        if (appointment.getPatient() != null) {
+            dto.setPatient(modelMapper.map(appointment.getPatient(), PatientDTO.class));
+        }
+        if (appointment.getDoctor() != null) {
+            dto.setDoctor(modelMapper.map(appointment.getDoctor(), DoctorDTO.class));
+        }
+        return dto;
     }
 }

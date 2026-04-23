@@ -24,17 +24,9 @@ public class BeanConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/*").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/doctor/list").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/doctor/delete/**").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/patient/list").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/patient/delete/**").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/specialization/list").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/patient/delete/**").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/doctor//create").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/patient/create").allowedOrigins("http://localhost:3000");
-                registry.addMapping("/api/specialization/create").allowedOrigins("http://localhost:3000");
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
             }
         };
     }

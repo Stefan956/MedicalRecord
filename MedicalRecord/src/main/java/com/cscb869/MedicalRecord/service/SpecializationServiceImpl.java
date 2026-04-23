@@ -42,10 +42,10 @@ public class SpecializationServiceImpl implements SpecializationService{
     }
     public SpecializationDTO getSpecializationByName(String name) {
         Specialization specialization = specializationDAO.findByName(name);
-
-        SpecializationDTO specializationDTO = modelMapper.map(specialization, SpecializationDTO.class);
-
-        return specializationDTO;
+        if (specialization == null) {
+            throw new NotFoundException("Specialization with name '" + name + "' is not found.");
+        }
+        return modelMapper.map(specialization, SpecializationDTO.class);
     }
     public SpecializationDTO createSpecialization(Specialization specialization) {
         Specialization specializationResponse = specializationDAO.save(specialization);
